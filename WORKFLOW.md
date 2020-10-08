@@ -33,28 +33,28 @@ git fetch upstream
 git branch -va
 ```
 
-Now, checkout your own master branch and merge the upstream repo's master branch:
+Now, checkout your own develop branch and merge the upstream repo's develop branch:
 
 ```shell
-# Checkout your master branch and merge upstream
-git checkout master
-git merge upstream/master
+# Checkout your develop branch and merge upstream
+git checkout develop
+git merge upstream/develop
 ```
 
-If there are no unique commits on the local master branch, git will simply perform a fast-forward. However, if you have been making changes on master (in the vast majority of cases you probably shouldn't be - [see the next section](#doing-your-work), you may have to deal with conflicts. When doing so, be careful to respect the changes made upstream.
+If there are no unique commits on the local develop branch, git will simply perform a fast-forward. However, if you have been making changes on develop (in the vast majority of cases you probably shouldn't be - [see the next section](#doing-your-work), you may have to deal with conflicts. When doing so, be careful to respect the changes made upstream.
 
-Now, your local master branch is up-to-date with everything modified upstream.
+Now, your local develop branch is up-to-date with everything modified upstream.
 
 ## Doing Your Work
 
 ### Create a Branch
-Whenever you begin work on a new feature or bugfix, it's important that you create a new branch. Not only is it proper git workflow, but it also keeps your changes organized and separated from the master branch so that you can easily submit and manage multiple pull requests for every task you complete.
+Whenever you begin work on a new feature or bugfix, it's important that you create a new branch. Not only is it proper git workflow, but it also keeps your changes organized and separated from the develop branch so that you can easily submit and manage multiple pull requests for every task you complete.
 
 To create a new branch and start working on it:
 
 ```shell
-# Checkout the master branch - you want your new branch to come from master
-git checkout master
+# Checkout the develop branch - you want your new branch to come from develop
+git checkout develop
 
 # Create a new branch named newfeature (give your branch its own simple informative name)
 git branch newfeature
@@ -71,17 +71,17 @@ Now, go to town hacking away and making whatever changes you want to.
 
 Prior to submitting your pull request, you might want to do a few things to clean up your branch and make it as simple as possible for the original repo's maintainer to test, accept, and merge your work.
 
-If any commits have been made to the upstream master branch, you should rebase your development branch so that merging it will be a simple fast-forward that won't require any conflict resolution work.
+If any commits have been made to the upstream develop branch, you should rebase your development branch so that merging it will be a simple fast-forward that won't require any conflict resolution work.
 
 ```shell
-# Fetch upstream master and merge with your repo's master branch
+# Fetch upstream develop and merge with your repo's develop branch
 git fetch upstream
-git checkout master
-git merge upstream/master
+git checkout develop
+git merge upstream/develop
 
 # If there were any new commits, rebase your development branch
 git checkout newfeature
-git rebase master
+git rebase develop
 ```
 
 Now, it may be desirable to squash some of your smaller commits down into a small number of larger more cohesive commits. You can do this with an interactive rebase:
@@ -89,7 +89,7 @@ Now, it may be desirable to squash some of your smaller commits down into a smal
 ```shell
 # Rebase all commits on your development branch
 git checkout 
-git rebase -i master
+git rebase -i develop
 ```
 
 This will open up a text editor where you can specify which commits to squash.
@@ -129,7 +129,7 @@ To do the merge manually, you'll need to checkout the target branch in the sourc
 
 ```shell
 # Checkout the branch you're merging to in the target repo
-git checkout master
+git checkout develop
 
 # Pull the development branch from the fork repo where the pull request development was done.
 git pull https://github.com/forkuser/forkedrepo.git newfeature
@@ -137,8 +137,8 @@ git pull https://github.com/forkuser/forkedrepo.git newfeature
 # Merge the development branch
 git merge newfeature
 
-# Push master with the new feature merged into it
-git push origin master
+# Push develop with the new feature merged into it
+git push origin develop
 ```
 
 Now that you're done with the development branch, you're free to delete it.
