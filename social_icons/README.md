@@ -6,8 +6,8 @@ Created by @konsav https://github.com/konsav/social-icons
 
 [![code for romania twitter][1.1]][1]
 [![code for romania facebook][2.1]][2]
-[![code for romania instagram][2.1]][3]
-[![code for romania linkedin][2.1]][4]
+[![code for romania instagram][3.1]][3]
+[![code for romania linkedin][4.1]][4]
 
 <!-- links to social media icons -->
 
