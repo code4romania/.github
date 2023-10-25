@@ -26,6 +26,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
+          context: git
           images: ${{ inputs.images }}
           tags: |
             type=edge
