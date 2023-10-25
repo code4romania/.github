@@ -18,6 +18,7 @@ on:
         type: string
         default: |
           type=edge
+          type=ref,event=branch
           type=semver,enable={{is_default_branch}},pattern={{version}}
           type=semver,enable={{is_default_branch}},pattern={{major}}.{{minor}}
           type=semver,enable={{is_default_branch}},pattern={{major}}
