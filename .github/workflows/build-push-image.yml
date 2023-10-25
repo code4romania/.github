@@ -17,7 +17,13 @@ on:
 
 jobs:
   build:
+    name: Build and push image to registry
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write # needed when pushing image to ghcr.io
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
