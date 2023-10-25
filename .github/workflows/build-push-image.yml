@@ -4,11 +4,24 @@ on:
   workflow_call:
     inputs:
       images:
+        description: A list of the org/repo names to push to
         required: true
         type: string
       registry:
+        description: Registry to push to, defaults to Docker Hub
         required: false
         type: string
+      tags:
+        # https://github.com/marketplace/actions/docker-metadata-action#tags-input
+        description: Tag rules for docker/metadata-action
+        required: false
+        type: string
+        default: |
+          type=edge
+          type=semver,enable={{is_default_branch}},pattern={{version}}
+          type=semver,enable={{is_default_branch}},pattern={{major}}.{{minor}}
+          type=semver,enable={{is_default_branch}},pattern={{major}}
+
     secrets:
       username:
         required: true
@@ -33,11 +46,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ inputs.images }}
-          tags: |
-            type=edge
-            type=semver,enable={{is_default_branch}},pattern={{version}}
-            type=semver,enable={{is_default_branch}},pattern={{major}}.{{minor}}
-            type=semver,enable={{is_default_branch}},pattern={{major}}
+          tags: ${{ inputs.tags }}
 
       - name: Set up Docker Buildx
         id: buildx
