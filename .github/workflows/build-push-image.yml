@@ -7,7 +7,6 @@ on:
         description: Registry to push to, defaults to Docker Hub
         required: false
         type: string
-
       images:
         description: A list of the org/repo names to push to
         required: true
@@ -23,7 +22,6 @@ on:
           type=semver,enable={{is_default_branch}},pattern={{version}}
           type=semver,enable={{is_default_branch}},pattern={{major}}.{{minor}}
           type=semver,enable={{is_default_branch}},pattern={{major}}
-
       context:
         description: 'The context to use for the Docker build command'
         required: false
@@ -63,8 +61,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Docker meta
         id: meta
