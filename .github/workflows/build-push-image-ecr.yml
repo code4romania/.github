@@ -43,10 +43,6 @@ on:
         default: true
 
     secrets:
-      username:
-        required: true
-      token:
-        required: true
       role_to_assume:
         required: true
 
