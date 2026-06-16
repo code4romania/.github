@@ -1,0 +1,64 @@
+name: Dependabot auto-merge
+
+on:
+  workflow_call:
+    inputs:
+      update-types:
+        description: Comma-separated semver bump types to auto-merge (patch, minor, major)
+        required: false
+        type: string
+        default: "patch,minor"
+      merge-method:
+        description: Merge method passed to `gh pr merge` (squash, merge, rebase)
+        required: false
+        type: string
+        default: "squash"
+
+    secrets:
+      github_token:
+        required: true
+
+jobs:
+  dependabot-auto-merge:
+    name: Auto-merge eligible Dependabot PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.actor == 'dependabot[bot]' && github.repository_owner == 'code4romania'
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Decide auto-merge eligibility
+        id: decide
+        env:
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
+          ALLOWED: ${{ inputs.update-types }}
+        run: |
+          short="${UPDATE_TYPE#version-update:semver-}"
+          if echo ",${ALLOWED}," | tr -d ' ' | grep -q ",${short},"; then
+            echo "should_merge=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_merge=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Approve PR
+        if: steps.decide.outputs.should_merge == 'true'
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge
+        if: steps.decide.outputs.should_merge == 'true'
+        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
