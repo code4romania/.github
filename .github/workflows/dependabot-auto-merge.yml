@@ -14,10 +14,6 @@ on:
         type: string
         default: "squash"
 
-    secrets:
-      github_token:
-        required: true
-
 jobs:
   dependabot-auto-merge:
     name: Auto-merge eligible Dependabot PRs
